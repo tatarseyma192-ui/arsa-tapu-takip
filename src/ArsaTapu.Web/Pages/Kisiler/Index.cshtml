@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h4 mb-0">Kişiler</h1>
     <form method="get" class="d-flex gap-2">
-        <input type="text" name="arama" class="form-control form-control-sm" placeholder="Ara..." value="@Context.Request.Query["arama"]" />
+        <input type="text" name="arama" class="form-control form-control-sm" placeholder="Ara..." value="@Model.Arama" />
         <button type="submit" class="btn btn-outline-secondary btn-sm">Ara</button>
     </form>
 </div>
