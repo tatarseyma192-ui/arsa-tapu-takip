@@ -137,7 +137,7 @@ public class TasinmazYuklemeService : ITasinmazYuklemeService
         // doğru şekilde çözer; iki ayrı SaveChanges'e bölünmez, işlem TEK transaction'da atomik kalır).
         foreach (var yeni in siniflandirma.YeniAlimlar)
         {
-            var tasinmaz = new Tasinmaz
+            var tasinmaz = new ArsaTapu.Domain.Entities.Tasinmaz
             {
                 KisiId = istek.KisiId,
                 TasinmazNo = yeni.TasinmazNo,
