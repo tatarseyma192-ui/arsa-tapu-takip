@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArsaTapu.DataAccess.Context;
 
-public class ArsaTapuDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
+public class ArsaTapuDbContext : IdentityDbContext<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole, string>
 {
     private readonly ICurrentUserService? _currentUserService;
 
