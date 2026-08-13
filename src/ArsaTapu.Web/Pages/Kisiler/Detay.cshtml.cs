@@ -34,7 +34,7 @@ public class DetayModel : PageModel
         }
 
         var tasinmazlar = await _api.KisininTasinmazlariniGetirAsync(id, jwt);
-        Portfoy = tasinmazlar?.Kayitlar.ToList() ?? Array.Empty<TasinmazDto>();
+        Portfoy = tasinmazlar?.Kayitlar.ToList() ?? new List<TasinmazDto>();
 
         return Page();
     }
