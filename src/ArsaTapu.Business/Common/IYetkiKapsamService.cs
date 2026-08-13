@@ -19,5 +19,5 @@ public interface IYetkiKapsamService
     /// Taşınmaz silme yetkisi: Admin her zaman silebilir; Personel yalnızca kendi
     /// yüklediği kayda bağlı taşınmazları silebilir (Requirements madde 1 rol tablosu).
     /// </summary>
-    Task TasinmazSilYetkisiKontrolEtAsync(Tasinmaz tasinmaz, CancellationToken ct = default);
+    Task TasinmazSilYetkisiKontrolEtAsync(ArsaTapu.Domain.Entities.Tasinmaz tasinmaz, CancellationToken ct = default);
 }
