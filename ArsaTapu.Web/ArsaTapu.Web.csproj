@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!--
+    Handbook madde 3 (Veri Erişimi): "Frontend doğrudan veritabanına erişmemelidir. Tüm veri
+    alışverişi API üzerinden gerçekleştirilmelidir." Bu yüzden bu proje BİLEREK yalnızca
+    ArsaTapu.Dto'ya referans verir (istek/yanıt şekillerini paylaşmak için) — ArsaTapu.Business/
+    ArsaTapu.DataAccess/ArsaTapu.Domain'e ASLA referans vermez. Tüm veri ArsaTapu.Api'ye HTTP
+    üzerinden (ApiIstemcisi) gidilerek alınır, tıpkı React ön yüzünün yapacağı gibi.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\ArsaTapu.Dto\ArsaTapu.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

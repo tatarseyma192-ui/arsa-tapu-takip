@@ -1,0 +1,77 @@
+@page "{id:int}"
+@model ArsaTapu.Web.Pages.Kisiler.DetayModel
+@{
+    ViewData["Title"] = Model.Kisi?.AdSoyad ?? "Kişi";
+}
+
+<a asp-page="/Kisiler/Index" class="text-decoration-none">&larr; Kişiler</a>
+
+@if (Model.HataMesaji is not null)
+{
+    <div class="alert alert-warning mt-3">@Model.HataMesaji</div>
+}
+else if (Model.Kisi is not null)
+{
+    <h1 class="h4 mt-3">@Model.Kisi.AdSoyad</h1>
+
+    <div class="row g-3 my-3">
+        <div class="col-4">
+            <div class="card"><div class="card-body">
+                <p class="text-muted small mb-1">Aktif taşınmaz</p>
+                <p class="h3 mb-0">@Model.Kisi.AktifTasinmazSayisi</p>
+            </div></div>
+        </div>
+        <div class="col-4">
+            <div class="card"><div class="card-body">
+                <p class="text-muted small mb-1">Satıldı / elden çıktı</p>
+                <p class="h3 mb-0">@Model.Kisi.SatilanTasinmazSayisi</p>
+            </div></div>
+        </div>
+        <div class="col-4">
+            <div class="card"><div class="card-body">
+                <p class="text-muted small mb-1">Toplam yükleme</p>
+                <p class="h3 mb-0">@Model.Kisi.YuklemeSayisi</p>
+            </div></div>
+        </div>
+    </div>
+
+    <h2 class="h6">Mevcut portföy</h2>
+    @if (Model.Portfoy.Count == 0)
+    {
+        <p class="text-muted">Kayıtlı taşınmaz yok.</p>
+    }
+    else
+    {
+        <div class="card">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Taşınmaz no</th>
+                        <th>İl / ilçe / mahalle</th>
+                        <th>Ada / parsel</th>
+                        <th>Bağımsız bölüm no</th>
+                        <th>Durum</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Portfoy)
+                    {
+                        <tr>
+                            <td>@(p.TasinmazNo ?? "-")</td>
+                            <td>@p.Il / @p.Ilce / @p.Mahalle</td>
+                            <td>@p.Ada / @p.Parsel</td>
+                            <td>@(p.BagimsizBolumNo?.ToString() ?? "-")</td>
+                            <td>
+                                <span class="badge @(p.Durum == "Aktif" ? "bg-success" : "bg-secondary")">@p.Durum</span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-page="/Tasinmazlar/Detay" asp-route-id="@p.Id" class="btn btn-sm btn-outline-secondary">Detay</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

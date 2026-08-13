@@ -1,0 +1,52 @@
+@page
+@model ArsaTapu.Web.Pages.Kisiler.IndexModel
+@{
+    ViewData["Title"] = "Kişiler";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">Kişiler</h1>
+    <form method="get" class="d-flex gap-2">
+        <input type="text" name="arama" class="form-control form-control-sm" placeholder="Ara..." value="@Context.Request.Query["arama"]" />
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Ara</button>
+    </form>
+</div>
+
+@if (Model.HataMesaji is not null)
+{
+    <div class="alert alert-warning">@Model.HataMesaji</div>
+}
+else if (Model.Kisiler.Count == 0)
+{
+    <p class="text-muted">Kayıtlı kişi yok.</p>
+}
+else
+{
+    <div class="card">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th class="text-end">Aktif taşınmaz</th>
+                    <th class="text-end">Satıldı</th>
+                    <th class="text-end">Yükleme</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var k in Model.Kisiler)
+                {
+                    <tr>
+                        <td>@k.AdSoyad</td>
+                        <td class="text-end">@k.AktifTasinmazSayisi</td>
+                        <td class="text-end">@k.SatilanTasinmazSayisi</td>
+                        <td class="text-end">@k.YuklemeSayisi</td>
+                        <td class="text-end">
+                            <a asp-page="/Kisiler/Detay" asp-route-id="@k.Id" class="btn btn-sm btn-outline-primary">Profili gör</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

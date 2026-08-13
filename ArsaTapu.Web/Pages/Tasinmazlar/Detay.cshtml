@@ -1,0 +1,60 @@
+@page "{id:int}"
+@model ArsaTapu.Web.Pages.Tasinmazlar.DetayModel
+@{
+    ViewData["Title"] = "Taşınmaz Detayı";
+}
+
+@if (Model.HataMesaji is not null)
+{
+    <div class="alert alert-warning">@Model.HataMesaji</div>
+}
+else if (Model.Tasinmaz is { } t)
+{
+    <a asp-page="/Kisiler/Detay" asp-route-id="@t.KisiId" class="text-decoration-none">&larr; @t.KisiAdSoyad profili</a>
+
+    <h1 class="h5 mt-3">Taşınmaz @(t.TasinmazNo ?? $"#{t.Id}")</h1>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-4">İl / İlçe / Mahalle</dt>
+                <dd class="col-8">@t.Il / @t.Ilce / @t.Mahalle</dd>
+                <dt class="col-4">Ada / Parsel</dt>
+                <dd class="col-8">@t.Ada / @t.Parsel</dd>
+                <dt class="col-4">Bağımsız Bölüm No</dt>
+                <dd class="col-8">@(t.BagimsizBolumNo?.ToString() ?? "-")</dd>
+                <dt class="col-4">Zemin Hisse ID</dt>
+                <dd class="col-8">@t.ZeminHisseId</dd>
+                <dt class="col-4">Nitelik</dt>
+                <dd class="col-8">@t.Nitelik</dd>
+                <dt class="col-4">Yüzölçüm</dt>
+                <dd class="col-8">@t.Yuzolcum</dd>
+                <dt class="col-4">Durum</dt>
+                <dd class="col-8">
+                    <span class="badge @(t.Durum == "Aktif" ? "bg-success" : "bg-secondary")">@t.Durum</span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    @if (t.OrtakKisiler.Count > 0)
+    {
+        <div class="alert alert-warning mt-3">
+            <strong>⚠ Ortak hisseli mülkiyet</strong> — bu taşınmaz aynı Bağımsız Bölüm No + Zemin Hisse ID
+            üzerinden şu kişi(ler) ile ortak: <strong>@string.Join(", ", t.OrtakKisiler)</strong>.
+        </div>
+    }
+
+    @if (t.KomsuKisiler.Count > 0)
+    {
+        <div class="alert alert-info mt-3">
+            <strong>Komşuluk</strong> — aynı ada/parselde, farklı bağımsız bölüme sahip kişi(ler):
+            <strong>@string.Join(", ", t.KomsuKisiler)</strong>.
+        </div>
+    }
+
+    @if (t.OrtakKisiler.Count == 0 && t.KomsuKisiler.Count == 0)
+    {
+        <p class="text-muted mt-3">Bu ada/parselde başka bir kişiye ait kayıt bulunamadı.</p>
+    }
+}
