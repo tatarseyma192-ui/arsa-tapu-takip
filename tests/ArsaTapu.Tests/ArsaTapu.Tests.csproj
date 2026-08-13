@@ -13,8 +13,10 @@
          burada da doğrudan yazılması gerçek bağımlılığı gizlemesin diyedir). -->
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
     <!-- KmlDosyaDepoServiceTests: new ConfigurationBuilder().AddInMemoryCollection(...) için. -->
+    <!-- Microsoft.Extensions.Configuration.Memory BAGIMSIZ bir NuGet paketi olarak YOK
+         (gercek CI hatasindan dogrulandi, 2026-08-06); AddInMemoryCollection zaten
+         Microsoft.Extensions.Configuration paketinin kendisinde geliyor. -->
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Memory" Version="9.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="xunit" Version="2.9.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
