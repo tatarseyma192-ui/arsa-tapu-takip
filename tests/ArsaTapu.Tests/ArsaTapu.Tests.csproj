@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <!-- TkgmParselSorguIstemcisiTests: NullLogger<T> için (Business üzerinden geçişli de gelir,
+         burada da doğrudan yazılması gerçek bağımlılığı gizlemesin diyedir). -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <!-- KmlDosyaDepoServiceTests: new ConfigurationBuilder().AddInMemoryCollection(...) için. -->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Memory" Version="9.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ArsaTapu.Business\ArsaTapu.Business.csproj" />
+    <ProjectReference Include="..\..\src\ArsaTapu.DataAccess\ArsaTapu.DataAccess.csproj" />
+    <ProjectReference Include="..\..\src\ArsaTapu.Domain\ArsaTapu.Domain.csproj" />
+    <ProjectReference Include="..\..\src\ArsaTapu.Dto\ArsaTapu.Dto.csproj" />
+  </ItemGroup>
+
+</Project>
