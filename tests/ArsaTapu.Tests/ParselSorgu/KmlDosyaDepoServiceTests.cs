@@ -24,8 +24,9 @@ public class KmlDosyaDepoServiceTests
         var dosyaAdi = servis.DosyaAdiOlustur("Gaziantep", "Şahinbey", "Binevler", 171, 190);
 
         // Requirements madde 4.2 örneği: GAZIANTEP_SAHINBEY_BINEVLER_171_190.kml
-        // (Türkçe büyük harfe çevrimde "ş" -> "Ş" olur; dosya sistemi UTF-8 destekler.)
-        Assert.Equal("GAZIANTEP_ŞAHINBEY_BINEVLER_171_190.kml", dosyaAdi);
+        // Dosya adı Türkçe karakterlerden ASCII'ye çevrilir (ş -> s, Requirements örneğiyle
+        // birebir aynı) — önceki hali burada yanlışlıkla "Ş" bekliyordu, testin kendi hatasıydı.
+        Assert.Equal("GAZIANTEP_SAHINBEY_BINEVLER_171_190.kml", dosyaAdi);
     }
 
     [Fact]
