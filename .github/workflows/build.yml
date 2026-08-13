@@ -80,4 +80,12 @@ jobs:
           fi
 
       - name: Migration'ı gerçek PostgreSQL'e uygula
-        run: dotnet ef database update --project src/ArsaTapu.DataAccess
+        run: dotnet ef database update --project src/ArsaTapu.DataAccess --startup-project src/ArsaTapu.Api
+
+      - name: Oluşan migration dosyalarını yükle (varsa commit edilmek üzere indirin)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ef-migrations
+          path: src/ArsaTapu.DataAccess/Migrations/
+          if-no-files-found: warn
