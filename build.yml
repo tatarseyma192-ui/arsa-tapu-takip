@@ -1,0 +1,85 @@
+name: Build, Test ve Migration Dogrulama
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+
+      - name: .NET 9 kur
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Paketleri geri yükle
+        run: dotnet restore
+
+      - name: Derle
+        run: dotnet build --no-restore
+
+      - name: Testleri çalıştır
+        run: dotnet test --no-build --verbosity normal
+
+  migration-test:
+    runs-on: ubuntu-latest
+    needs: build-test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: arsatapu
+          POSTGRES_PASSWORD: arsatapu_test_sifre
+          POSTGRES_DB: arsatapu
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      ConnectionStrings__VarsayilanBaglanti: "Host=localhost;Port=5432;Database=arsatapu;Username=arsatapu;Password=arsatapu_test_sifre"
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+
+      - name: .NET 9 kur
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: dotnet-ef aracını kur
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Araç PATH'ini ekle
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: Paketleri geri yükle
+        run: dotnet restore
+
+      - name: İlk migration yoksa oluştur
+        run: |
+          if [ -z "$(find src/ArsaTapu.DataAccess/Migrations -name '*.cs' 2>/dev/null)" ]; then
+            echo "Migration bulunamadı, InitialCreate oluşturuluyor..."
+            dotnet ef migrations add InitialCreate --project src/ArsaTapu.DataAccess --startup-project src/ArsaTapu.Api
+          else
+            echo "Migration zaten mevcut, oluşturma adımı atlanıyor."
+          fi
+
+      - name: Migration'ı gerçek PostgreSQL'e uygula
+        run: dotnet ef database update --project src/ArsaTapu.DataAccess --startup-project src/ArsaTapu.Api
+
+      - name: Oluşan migration dosyalarını yükle (varsa commit edilmek üzere indirin)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ef-migrations
+          path: src/ArsaTapu.DataAccess/Migrations/
+          if-no-files-found: warn
